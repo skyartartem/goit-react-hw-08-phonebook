@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import {useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { Helmet } from 'react-helmet';
 import { ContactList } from 'components/ContactList/ContactList';
 import { ContactEditor } from 'components/ContactEditor/ContactEditor';
 
 // import { ContactForm } from 'components/ContactForm/ContactForm';
+
 // import { ContactList } from 'components/ContactList/ContactList';
-// import { Filter } from 'components/Filter/Filter';
+import { Filter } from 'components/Filter/Filter';
 // import css from 'components/App.module.css';
 
 import { fetchContacts } from 'redux/contacts/operations';
@@ -20,6 +21,12 @@ export default function Contacts() {
     dispatch(fetchContacts());
   }, [dispatch]);
 
+  const [filter, setFilter] = useState('');
+  
+   const onChangeInput = evt => {
+     setFilter(evt.currentTarget.value);
+   };
+
   return (
     <>
       {/* <div className={css.conteiner}>
@@ -31,11 +38,12 @@ export default function Contacts() {
       </div> */}
 
       {/* <Helmet> */}
-        <title>Your Contacts</title>
+      <title>Your Contacts</title>
       {/* </Helmet> */}
       <ContactEditor />
+      <Filter filter={filter} onChangeInput={onChangeInput} />
       <div>{isLoading && 'Request in progress...'}</div>
-      <ContactList />
+      <ContactList filter={filter} />
     </>
   );
 }
