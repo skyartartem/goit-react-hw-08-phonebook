@@ -1,45 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Contact } from '../Contact/Contact';
+import { selectAllContacts } from 'redux/contacts/selectors';
 import css from './ContactList.module.css';
-import { deleteContactThunk, fetchAllThunk } from 'redux/contactsThunk';
-import { useEffect } from 'react';
 
 export const ContactList = () => {
-  const { items, isLoading, error } = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAllThunk());
-  }, [dispatch]);
-  const filteredContacts = () => {
-    const filteredContacts = items.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-    return filteredContacts;
-  };
+  const contacts = useSelector(selectAllContacts);
 
   return (
-    <>
-      {isLoading && <p>loading...</p>}
-      {error && <p>Something went wrong...</p>}
-      <ul className={css.list}>
-        {filteredContacts().map(contact => {
-          return (
-            <li className={css.item} key={contact.id}>
-              <span>{contact.name}:</span>
-              <span className={css.number}> {contact.phone}</span>
-              <button
-                className={css.button}
-                type="button"
-                onClick={() => {
-                  dispatch(deleteContactThunk(contact.id));
-                }}
-              >
-                Delete
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <ul className={css.list}>
+      {contacts.map(({ id, name, number }) => (
+        <li key={id}>
+          <Contact id={id} name={name} number={number} />
+        </li>
+      ))}
+    </ul>
   );
 };
