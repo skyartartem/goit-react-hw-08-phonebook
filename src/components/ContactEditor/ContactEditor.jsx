@@ -16,7 +16,7 @@ export const ContactEditor = () => {
     const number = form.elements.number.value;
     if (name === '' && number === '') {
       toast.error('Contact cannot be empty. Enter some text!');
-      //  alert('Contact cannot be empty. Enter some text!');
+      //  alert('Contact and number cannot be empty. Enter some name and number!');
       return;
     }
     if (
@@ -24,7 +24,7 @@ export const ContactEditor = () => {
         value => value.name.toLocaleLowerCase() === name.toLocaleLowerCase()
       )
     ) {
-      toast.error(`${name} is alredy in contacts`);
+      toast.error(`Name -${name}- is alredy in contacts`);
       return;
     }
     dispatch(addContact({ name, number }));
